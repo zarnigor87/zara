@@ -64,7 +64,7 @@ ingress:
   tls: 
       - secretName: ext-demotls
         hosts:
-      - argo-wordpress.zarnigor.net
+          - ext-demo.zarnigor.net
 
 resources: 
   # We usually recommend not to specify default resources and to leave this as a conscious
