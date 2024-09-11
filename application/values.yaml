@@ -8,7 +8,7 @@ image:
   repository: wordpress
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "php8.3-fpm"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -56,15 +56,10 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
-          backend:
-           service:
-            name: wordpress # Replace with the actual service name for WordPress
-            port:
-             number: 80
   tls: 
-  #  - secretName: argo-wordpress-tls
-  #    hosts:
-  #      - argo-wordpress.zarnigor.net
+   - secretName: argo-wordpress-tls
+     hosts:
+       - argo-wordpress.zarnigor.net
 
 resources: 
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -103,3 +98,38 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+persistence:
+  enabled: true
+  storageClass: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+
+mariadb:
+  enabled: true
+  auth:
+    rootPassword: "rootpassword"   # Change this to a secure value
+    username: "wordpress"          # WordPress DB user
+    password: "wordpresspassword"  # WordPress DB password
+    database: "wordpress"          # WordPress DB name
+  primary:
+    persistence:
+      enabled: true
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
+      size: 8Gi
+env:
+  WORDPRESS_DB_NAME: "wordpress"
+  WORDPRESS_DB_USER: "wordpress"
+  WORDPRESS_DB_PASSWORD: "wordpresspassword"
+  WORDPRESS_DB_HOST: "wordpress-mariadb.wordpress.svc.cluster.local:3306"
+# Configuration for external databases if not using internal MariaDB
+externalDatabase:
+  enabled: false
+  host: ""
+  user: ""
+  password: ""
+  database: ""
+  port: 3306

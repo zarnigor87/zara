@@ -40,14 +40,15 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+          env:
+            - name: WORDPRESS_DB_NAME
+              value: {{ .Values.env.WORDPRESS_DB_NAME | quote }}
+            - name: WORDPRESS_DB_USER
+              value: {{ .Values.env.WORDPRESS_DB_USER | quote }}
+            - name: WORDPRESS_DB_PASSWORD
+              value: {{ .Values.env.WORDPRESS_DB_PASSWORD | quote }}
+            - name: WORDPRESS_DB_HOST
+              value: {{ .Values.env.WORDPRESS_DB_HOST | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
