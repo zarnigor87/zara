@@ -52,14 +52,20 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     acme.cert-manager.io/http01-edit-in-place: "true"
   hosts:
-    - host: argo-wordpress.zarnigor.net
+    - host: ext-demo.zarnigor.net
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls: 
+<<<<<<< HEAD
    - secretName: argo-wordpress-tls
      hosts:
        - argo-wordpress.zarnigor.net
+=======
+      - secretName: ext-demotls
+        hosts:
+          - ext-demo.zarnigor.net
+>>>>>>> 0f281a444a294ad61e9ae81bc18e154fec5095ef
 
 resources: 
   # We usually recommend not to specify default resources and to leave this as a conscious
